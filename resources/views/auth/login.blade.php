@@ -35,7 +35,7 @@
                                 @enderror
               <div class="position-absolute" id="password-visibility"><i class="bi bi-eye"></i><i class="bi bi-eye-slash"></i></div>
             </div>
-            <button class="btn btn-primary w-100" style="background-color:#98D0E1;border-color:#98D0E1" type="submit">Sign In</button>
+            <button class="btn w-100" style="background-color:#98D0E1;border-color:#98D0E1;color:#244860" type="submit">Sign In</button>
           </form>
         </div>
         <!-- Login Meta -->

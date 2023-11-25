@@ -51,11 +51,11 @@
               <div class="skill-data">
                 <!-- Skill Name-->
                 <div class="skill-name d-flex align-items-center justify-content-between">
-                  <p class="mb-1">Data Api</p><small class="mb-1"><span>78</span>%</small>
+                  <p class="mb-1">Data Api</p><small class="mb-1"><span class="api">{{$api}}</span>%</small>
                 </div>
                 <!-- Progress -->
                 <div class="progress" style="height: 4px;">
-                  <div class="progress-bar bg-danger" style="width: 78%;" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100"></div>
+                  <div class="progress-bar bar-api bg-danger" style="width: {{$api}}%;" role="progressbar" aria-valuenow="{{$api}}" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
               </div>
             </div>
@@ -69,11 +69,11 @@
               <div class="skill-data">
                 <!-- Skill Name -->
                 <div class="skill-name d-flex align-items-center justify-content-between">
-                  <p class="mb-1">Data Asap</p><small class="mb-1"><span>88</span>%</small>
+                  <p class="mb-1">Data Asap</p><small class="mb-1"><span class="asap">{{$asap}}</span>%</small>
                 </div>
                 <!-- Progress -->
                 <div class="progress" style="height: 4px;">
-                  <div class="progress-bar bg-secondary" style="width: 88%;" role="progressbar" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100"></div>
+                  <div class="progress-bar bar-asap bg-secondary" style="width: {{$asap}}%;" role="progressbar" aria-valuenow="{{$asap}}" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
               </div>
             </div>
@@ -90,6 +90,21 @@
         <div class="card">
           <div class="card-body">
             <!-- Single Task Progress -->
+            @if($api > 50)
+            <div class="single-task-progress">
+              <!-- Progress Info -->
+              <div class="progress-info d-flex align-items-center justify-content-between">
+                <h6 class="mb-1">Lab Project 1 - Bahaya 🔥</h6><span class="mt-0 mb-1"></span>
+              </div>
+              <!-- Progress -->
+              <div class="progress" style="height: 4px;">
+                <div class="progress-bar-st bg-danger" style="width: 100%;" role="progressbar" aria-valuemax="100"></div>
+              </div>
+              <div class="task-member-info d-flex align-items-center justify-content-between">
+                <!-- Who working -->
+              </div>
+            </div>
+            @else
             <div class="single-task-progress">
               <!-- Progress Info -->
               <div class="progress-info d-flex align-items-center justify-content-between">
@@ -97,25 +112,13 @@
               </div>
               <!-- Progress -->
               <div class="progress" style="height: 4px;">
-                <div class="progress-bar bg-success" style="width: 100%;" role="progressbar" aria-valuemax="100"></div>
+                <div class="progress-bar-st bg-success" style="width: 100%;" role="progressbar" aria-valuemax="100"></div>
               </div>
               <div class="task-member-info d-flex align-items-center justify-content-between">
                 <!-- Who working -->
               </div>
             </div>
-            <div class="single-task-progress">
-              <!-- Progress Info -->
-              <div class="progress-info d-flex align-items-center justify-content-between">
-                <h6 class="mb-1">Notifikasi Wa - Aktif</h6><span class="mt-0 mb-1"></span>
-              </div>
-              <!-- Progress -->
-              <div class="progress" style="height: 4px;">
-                <div class="progress-bar bg-success" style="width: 100%;" role="progressbar" aria-valuemax="100"></div>
-              </div>
-              <div class="task-member-info d-flex align-items-center justify-content-between">
-                <!-- Who working -->
-              </div>
-            </div>
+            @endif
           </div>
         </div>
       </div>
@@ -147,4 +150,34 @@
         </div>
       </div>
     </div>
+
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+jQuery(function($) {
+    setInterval(function() {
+        var second = parseInt((new Date().getTime() / 1000) % 30);
+        if (second === 0) {
+            var url = "{{url('api')}}";
+            jQuery.get(url, function(data, status) {
+                $(".api").text(data.api);
+                $(".asap").text(data.asap);
+                $(".bar-api").css("width", data.api + "%").attr("aria-valuenow", data.api); // Update lebar dan nilai atribut
+                $(".bar-asap").css("width", data.asap + "%").attr("aria-valuenow", data.asap); // Update lebar dan nilai atribut
+
+                // Cek kondisi data.api > 50
+                if (data.api > 50) {
+                    $(".single-task-progress h6").text("Lab Project 1 - Bahaya 🔥"); // Ubah teks menjadi "Bahaya"
+                    $(".progress-bar-st").removeClass("bg-success").addClass("bg-danger"); // Ganti kelas bg-success dengan bg-danger
+                } else {
+                    $(".single-task-progress h6").text("Lab Project 1 - Aman"); // Biarkan teks "Aman"
+                    $(".progress-bar-st").removeClass("bg-danger").addClass("bg-success"); // Kembalikan kelas bg-danger menjadi bg-success jika tidak memenuhi kondisi
+                }
+
+                console.log('update data monitoring');
+            });
+        }
+    }, 1000); // atau kurang dari 1 detik
+});
+
+</script>
 @endsection
